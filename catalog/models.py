@@ -1,6 +1,7 @@
 import uuid
 from django.conf import settings
 from django.db import models
+from user.models import Author
 
 class Genre(models.Model):
     GENRE_CHOICES = (
@@ -9,7 +10,7 @@ class Genre(models.Model):
         ("P", "POLITICS"),
         ("F", "FINANCE"),
     )
-    name = models.CharField(max_length=1, choices = GENRE_CHOICES, default = "R")
+    name = models.CharField(max_length=1, choices = GENRE_CHOICES, default = "R", unique=True)
 
     def __str__(self):
         return self.name
@@ -27,9 +28,13 @@ class Language(models.Model):
     def __str__(self):
         return self.name
 
+# class Author(settings.AUTH_USER_MODEL):
+#     dob = models.DateField(blank=False, null=False)
+#     dod = models.DateField(blank=True, null=True)
+
 class Book(models.Model):
     title = models.CharField(max_length=255)
-    # author = ""
+    author = models.ManyToManyField(Author, related_name="books")
     summary = models.TextField()
     isbn = models.CharField(max_length=13, unique=True)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
@@ -46,10 +51,13 @@ class BookInstance(models.Model):
     )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    status = models.CharField(max_length=1, choices = LOAN_STATUS, default="A")
+    status = models.CharField(max_length=1, choices = LOAN_STATUS, default="A", unique=True)
     return_date =models.DateTimeField(blank= False, null=False)
     comments = models.TextField(blank= True, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.id
 
 
 
