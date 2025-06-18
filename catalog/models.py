@@ -10,7 +10,7 @@ class Genre(models.Model):
         ("P", "POLITICS"),
         ("F", "FINANCE"),
     )
-    name = models.CharField(max_length=1, choices = GENRE_CHOICES, default = "R", unique=True)
+    name = models.CharField(max_length=1, choices = GENRE_CHOICES, default = "R")
 
     def __str__(self):
         return self.name
@@ -33,6 +33,7 @@ class Language(models.Model):
 #     dod = models.DateField(blank=True, null=True)
 
 class Book(models.Model):
+    # objects = None
     title = models.CharField(max_length=255)
     author = models.ManyToManyField(Author, related_name="books")
     summary = models.TextField()
