@@ -1,7 +1,7 @@
 import uuid
 from django.conf import settings
 from django.db import models
-from user.models import Author
+# from user.models import Author
 
 class Genre(models.Model):
     GENRE_CHOICES = (
@@ -31,6 +31,13 @@ class Language(models.Model):
 # class Author(settings.AUTH_USER_MODEL):
 #     dob = models.DateField(blank=False, null=False)
 #     dod = models.DateField(blank=True, null=True)
+
+class Author(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    dob =models.DateField()
+    dod = models.DateField()
 
 class Book(models.Model):
     # objects = None
