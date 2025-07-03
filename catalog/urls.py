@@ -1,9 +1,21 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+
 from . import views
+from .views import BookViewSet, BookImageViewSet
+
+router = routers.DefaultRouter()
+router.register('books', BookViewSet, basename='books')
+# router.register('images', BookImageViewSet, basename='book-images')
+
 
 urlpatterns = [
+
+    path("", include(router.urls)),
     # path("", views.get_books),
     path("authors/", views.AddAuthorView.as_view(), name="add_author"),
+
+    path("images/<int:pk>/", views.image_detail, name="book-images_detail"),
     path("authors/<int:pk>/", views.GetUpdateDeleteAuthorView.as_view(), name="GET_UPDATE_DELETE_AUTHOR"),
     # path("delete/authors/<int:pk>/", views.delete_author, name="delete_author"),
     # path("get/authors/", views.get_authors, name="get_authors"),

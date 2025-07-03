@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from catalog.models import Book, Author
+from catalog.models import Book, Author, BookImage
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -10,9 +10,27 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class BookSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(many=True, read_only=True)
+    images = serializers.HyperlinkedRelatedField(
+        view_name='book-image-detail',
+        queryset=BookImage.objects.all(),
+        many=True
+    )
     class Meta:
         model = Book
-        fields = ['id', 'title', 'summary', 'author']
+        fields = ['id', 'title', 'summary', 'images', 'author']
+
+class AddBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ['id', 'title', 'isbn', 'summary']
+
+
+class BookImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookImage
+        fields = ['id','image']
+
+
 
         # author = serializers.ManyRelatedField(
         #     # Author.objects.all(),
