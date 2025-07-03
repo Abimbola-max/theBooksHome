@@ -36,8 +36,11 @@ class Author(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
-    dob =models.DateField()
-    dod = models.DateField()
+    dob = models.DateField(blank=False, null=False)
+    dod = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 class Book(models.Model):
     # objects = None
@@ -66,6 +69,10 @@ class BookInstance(models.Model):
 
     def __str__(self):
         return self.id
+
+class BookImage(models.Model):
+    image = models.ImageField(upload_to="book/images", blank=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
 
 

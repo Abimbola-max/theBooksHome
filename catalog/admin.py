@@ -16,12 +16,18 @@ class GenreAdmin(admin.ModelAdmin):
 
 @admin.register(models.Author)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name']
+    list_display = ['first_name', 'last_name', 'email', 'dob', 'dod']
     search_fields = ['first_name', 'last_name']
 
 @admin.register(models.Language)
 class LanguageAdmin(admin.ModelAdmin):
     list_display = ['name']
+
+@admin.register(models.BookImage)
+class BookImageAdmin(admin.ModelAdmin):
+    list_display = ['image', 'book']
+    list_display_links = ['image']
+
 
 admin.site.register(models.BookInstance)
 
