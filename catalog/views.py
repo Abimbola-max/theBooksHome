@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView, ListCreateAPIView, get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Book, Author, BookImage
 from .serializers import BookSerializer, AuthorSerializer, AddBookSerializer, BookImageSerializer
@@ -65,7 +66,10 @@ class BookViewSet(viewsets.ModelViewSet):
 class BookImageViewSet(viewsets.ModelViewSet):
     queryset = BookImage.objects.all()
     serializer_class = BookImageSerializer
+    permission_classes = [IsAuthenticated]
 
+    def get_serializer_context(self):
+        return {"book_id": self.kwargs["book_qpk"]}
 # def delete_author(request, pk):
 #     author = Author.objects.get(pk=pk)
 #     author.delete()

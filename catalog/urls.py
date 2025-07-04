@@ -1,5 +1,5 @@
 from django.urls import path, include
-from rest_framework import routers
+from rest_framework_nested import routers
 
 from . import views
 from .views import BookViewSet, BookImageViewSet
@@ -7,11 +7,14 @@ from .views import BookViewSet, BookImageViewSet
 router = routers.DefaultRouter()
 router.register('books', BookViewSet, basename='books')
 # router.register('images', BookImageViewSet, basename='book-images')
-
+book_image_router = routers.NestedDefaultRouter(router, 'books', lookup='book')
+book_image_router.register('images', BookImageViewSet, basename='book-images')
 
 urlpatterns = [
 
     path("", include(router.urls)),
+    path("", include(book_image_router.urls)),
+
     # path("", views.get_books),
     path("authors/", views.AddAuthorView.as_view(), name="add_author"),
 

@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
+
 
 load_dotenv()
 
@@ -43,6 +45,8 @@ INSTALLED_APPS = [
     'user',
     'catalog',
     'rest_framework',
+    'djoser',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +78,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TheBooksHome.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
+}
 
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'user.serializers.UserCreateSerializer',
+    }
+}
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -127,6 +141,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_ROOT= BASE_DIR/'media'
 MEDIA_URL= '/media/'
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
